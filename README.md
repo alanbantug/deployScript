@@ -1,6 +1,6 @@
 # deployScript
 
-While toying around with a number of Python scripts, I found myself doing `cut and paste` when I copy my scripts to a common library. On top of that, I also found myself manually creating the `.bat` files before I can run them. 
+While toying around with a number of Python scripts, I found myself doing `cut and paste` when I copy my scripts from a central locations where I have all my code to a common library where I keep my scripts. On top of that, I also found myself manually creating the `.bat` files before I can run them. 
 
 This script is created to allow easy deployment of Python scripts using TKinter to any other location within you Windows PC. 
 
@@ -19,6 +19,7 @@ Clone this GitHub repository to install and run the script.
 ```
 $ git clone https://github.com/alanbantug/deployScript.git
 ```
+
 ## License
 
-To follow
+To follow.
