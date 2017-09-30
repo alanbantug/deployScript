@@ -16,6 +16,9 @@ This script will perform the following:
 
 Clone this GitHub repository to install and run the script.
 
+```
+$ git clone https://github.com/alanbantug/deployScript.git
+```
 ## License
 
-
+To follow
