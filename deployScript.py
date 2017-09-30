@@ -322,8 +322,29 @@ class Application(Frame):
 
 root = Tk()
 root.title("FOLDER COPY UTILITY")
-root.minsize(480, 380)
-root.maxsize(480, 380)
+#root.minsize(480, 380)
+#root.maxsize(480, 380)
+
+# Set size
+
+wh = 380
+ww = 480
+
+#root.resizable(height=False, width=False)
+
+root.minsize(ww, wh)
+root.maxsize(ww, wh)
+
+# Position in center screen
+
+ws = root.winfo_screenwidth() 
+hs = root.winfo_screenheight() 
+
+# calculate x and y coordinates for the Tk root window
+x = (ws/2) - (ww/2)
+y = (hs/2) - (wh/2)
+
+root.geometry('%dx%d+%d+%d' % (ww, wh, x, y))
 
 app = Application(root)
 
