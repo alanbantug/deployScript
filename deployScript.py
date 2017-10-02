@@ -190,8 +190,6 @@ class Application(Frame):
 
         self.popConfirm = Toplevel(self.main_container)
         self.popConfirm.title("MESSAGE")
-        #self.popConfirm.maxsize(300, 80)
-        #self.popConfirm.minsize(300, 80)
 
         self.messageText = Label(self.popConfirm, text=message, style="MS.TLabel" )
         self.close = Button(self.popConfirm, text="CLOSE", style="B.TButton", command=self.popConfirm.destroy)
