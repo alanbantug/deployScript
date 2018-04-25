@@ -2,13 +2,22 @@
 
 ### This utility will copy a folder and its contents into a different folder
 ###
-import Tkinter
-from Tkinter import *
+#import Tkinter
+#from Tkinter import *
 
-import ttk
-from ttk import *
+#import ttk
+#from ttk import *
 
-from tkFileDialog import askdirectory
+#from tkFileDialog import askdirectory
+
+import tkinter
+from tkinter import *
+
+from tkinter.ttk import *
+from tkinter import messagebox
+
+from tkinter.filedialog import askdirectory
+from tkinter.filedialog import askopenfilename
 
 import os
 import shutil
@@ -19,12 +28,12 @@ import subprocess as sp
 class Application(Frame):
 
     def __init__(self, master):
-        
+
         self.master = master
         self.main_container = Frame(self.master)
 
         # Define the source and target folder variables
-        
+
         self.origin = os.getcwd()
         self.copied = IntVar()
         self.copying = 0
@@ -34,7 +43,7 @@ class Application(Frame):
         self.allSet = True
         self.initialize = IntVar()
         self.build = IntVar()
-        
+
         # Create main frame
         self.main_container.grid(column=0, row=0, sticky=(N,S,E,W))
 
@@ -53,7 +62,7 @@ class Application(Frame):
         Style().configure("B.TCheckButton", font="Verdana 8")
 
         Style().configure("O.TLabelframe.Label", font="Verdana 8", foreground="black")
-        
+
         # Create widgets
         self.sep_a = Separator(self.main_container, orient=HORIZONTAL)
         self.sep_b = Separator(self.main_container, orient=HORIZONTAL)
@@ -78,15 +87,15 @@ class Application(Frame):
         self.createScript = Checkbutton(self.sourceTarget, text="Build Script", style="B.TCheckbutton", variable=self.build)
         self.sep_s = Separator(self.sourceTarget, orient=HORIZONTAL)
         self.sep_t = Separator(self.sourceTarget, orient=HORIZONTAL)
-        
+
         self.statusLabel = Label(self.main_container, text="Select source and target folders", style="G.TLabel")
         self.submit = Button(self.main_container, text="START", style="B.TButton", command=self.startProcess)
         self.restart = Button(self.main_container, text="RESTART", style="B.TButton", command=self.restartProcess)
         self.exit = Button(self.main_container, text="EXIT", style="B.TButton", command=root.destroy)
 
         self.progress_bar = Progressbar(self.main_container, orient="horizontal", mode="indeterminate", maximum=50)
-        
-        # Position widgets        
+
+        # Position widgets
         self.mainLabel.grid(row=0, column=0, columnspan=3, padx=5, pady=5, sticky='NSEW')
         self.subLabelA.grid(row=1, column=0, columnspan=3, padx=5, pady=0, sticky='NSEW')
         self.subLabelB.grid(row=2, column=0, columnspan=3, padx=5, pady=0, sticky='NSEW')
@@ -105,7 +114,7 @@ class Application(Frame):
         self.initTarget.grid(row=5, column=0, padx=5, pady=5, sticky='W')
         self.createScript.grid(row=5, column=2, padx=5, pady=5, sticky='W')
         self.sourceTarget.grid(row=5, column=0, columnspan=3, rowspan=6, padx=5, pady=0, sticky='NSEW')
-        
+
         self.sep_b.grid(row=11, column=0, columnspan=3, padx=5, pady=5, sticky='NSEW')
 
         self.submit.grid(row=12, column=0, columnspan=1, padx=5, pady=0, sticky='NSEW')
@@ -127,7 +136,7 @@ class Application(Frame):
             self.sourceLabel["text"] = os.path.dirname(pathname)[:30] + ".../" + os.path.basename(pathname)
             self.source = pathname
 
-            
+
     def setTarget(self):
 
         pathname = askdirectory()
@@ -138,7 +147,7 @@ class Application(Frame):
 
 
     def setScript(self):
-        
+
         pathname = askdirectory()
 
         if os.path.isdir(pathname):
@@ -150,7 +159,7 @@ class Application(Frame):
 
         if self.submit["text"] == "START":
             self.checkFolders()
-            
+
             if self.allSet:
                 self.submit["text"] = "PROCESS"
                 self.restart["state"] = "DISABLED"
@@ -158,7 +167,7 @@ class Application(Frame):
 
         else:
             self.checkFolders()
-            
+
             if self.allSet:
                 self.processRequest()
 
@@ -166,7 +175,7 @@ class Application(Frame):
     def checkFolders(self):
 
         self.allSet = True
-        
+
         if self.source == "":
             self.showMessage("Source folder not yet selected.")
             self.allSet = False
@@ -184,7 +193,7 @@ class Application(Frame):
 
         if self.initialize.get() == 1 and self.submit["text"] == "START":
             self.showMessage("You have chosen to initialize target folder.")
-            
+
 
     def showMessage(self, message):
 
@@ -207,8 +216,8 @@ class Application(Frame):
 
         # Position in center screen
 
-        pop_ws = self.popConfirm.winfo_screenwidth() 
-        pop_hs = self.popConfirm.winfo_screenheight() 
+        pop_ws = self.popConfirm.winfo_screenwidth()
+        pop_hs = self.popConfirm.winfo_screenheight()
 
         # calculate x and y coordinates for the Tk root window
         x = (pop_ws/2) - (pop_ww/2)
@@ -233,7 +242,7 @@ class Application(Frame):
         # get start time
 
         t0 = time()
-        
+
         # disable all buttons
 
         self.selectSource["state"] = DISABLED
@@ -244,7 +253,7 @@ class Application(Frame):
         self.exit["state"] = DISABLED
 
         self.statusLabel["text"] = "Processing..."
-        
+
         if self.initialize.get() == 1:
 
             # Target folder will be initialized to ensure that it has same structure as source
@@ -259,7 +268,7 @@ class Application(Frame):
                 # Delete all folders in target folder next
                 for folder in subFolders:
                     os.rmdir(os.path.join(folderName, folder))
-                    
+
 
         if self.build.get() == 1:
 
@@ -267,7 +276,7 @@ class Application(Frame):
 
 
         # Walk thru the source folder, creating subfolders and copying files into the target folder
-        
+
         for folderName, subFolders, fileNames in os.walk(self.source):
 
             for files in fileNames:
@@ -275,9 +284,9 @@ class Application(Frame):
                 if files[-3:] == '.py':
 
                     sub = os.path.relpath(folderName, self.source)
-                
+
                     # Check if the subfolder already exists in the target folder and create it if it is not
-                
+
                     if sub != ".":
                         if os.path.exists(os.path.join(self.target, sub)):
                             pass
@@ -295,9 +304,9 @@ class Application(Frame):
         self.submit["state"] = NORMAL
         self.exit["state"] = NORMAL
 
-        self.progress_bar.stop()            
+        self.progress_bar.stop()
         self.statusLabel["text"] = str(self.copying) + " file(s) copied successfully in %0.1fs." % (time() - t0)
-        
+
 
     def buildScript(self):
 
@@ -306,7 +315,7 @@ class Application(Frame):
         script_line = 'Attention! Delete this line and others that are not needed for the script to run'
         scriptFile.write(script_line)
         scriptFile.write("\n")
-        
+
         for folderName, subFolders, fileNames in os.walk(self.source):
 
             for files in fileNames:
@@ -352,8 +361,8 @@ root.maxsize(ww, wh)
 
 # Position in center screen
 
-ws = root.winfo_screenwidth() 
-hs = root.winfo_screenheight() 
+ws = root.winfo_screenwidth()
+hs = root.winfo_screenheight()
 
 # calculate x and y coordinates for the Tk root window
 x = (ws/2) - (ww/2)
