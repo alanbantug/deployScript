@@ -41,7 +41,8 @@ class Application(Frame):
         self.target = ""
         self.script = ""
         self.allSet = True
-        self.initialize = IntVar()
+        self.initFiles = IntVar()
+        self.initFolders = IntVar()
         self.build = IntVar()
 
         # Create main frame
@@ -49,7 +50,7 @@ class Application(Frame):
 
         # Set Label styles
         Style().configure("M.TLabel", font="Courier 20 bold", height="20", foreground="blue", background="white", anchor="center")
-        Style().configure("B.TLabel", font="Verdana 8", background="white", width="40")
+        Style().configure("B.TLabel", font="Verdana 8", background="white", width='46')
         Style().configure("MS.TLabel", font="Verdana 10" )
         Style().configure("S.TLabel", font="Verdana 8" )
         Style().configure("G.TLabel", font="Verdana 8")
@@ -83,8 +84,9 @@ class Application(Frame):
         self.selectScript = Button(self.sourceTarget, text="SCRIPT LOCATION", style="B.TButton", command=self.setScript)
         self.scriptLabel = Label(self.sourceTarget, text="None", style="B.TLabel" )
 
-        self.initTarget = Checkbutton(self.sourceTarget, text="Initialize Target Folder", style="B.TCheckbutton", variable=self.initialize)
-        self.createScript = Checkbutton(self.sourceTarget, text="Build Script", style="B.TCheckbutton", variable=self.build)
+        self.clearFiles = Checkbutton(self.main_container, text="Clear Files", style="B.TCheckbutton", variable=self.initFiles)
+        self.clearFolders = Checkbutton(self.main_container, text="Clear Folders", style="B.TCheckbutton", variable=self.initFolders)
+        self.createScript = Checkbutton(self.main_container, text="Build Script", style="B.TCheckbutton", variable=self.build)
         self.sep_s = Separator(self.sourceTarget, orient=HORIZONTAL)
         self.sep_t = Separator(self.sourceTarget, orient=HORIZONTAL)
 
@@ -109,11 +111,13 @@ class Application(Frame):
         self.selectTarget.grid(row=2, column=0, padx=5, pady=5, sticky='NSEW')
         self.targetLabel.grid(row=2, column=1, columnspan=2, padx=5, pady=5, sticky='NSEW')
         self.sep_t.grid(row=3, column=0, columnspan=3, padx=5, pady=5, sticky='NSEW')
-        self.selectScript.grid(row=4, column=0, padx=5, pady=5, sticky='NSEW')
-        self.scriptLabel.grid(row=4, column=1, columnspan=2, padx=5, pady=5, sticky='NSEW')
-        self.initTarget.grid(row=5, column=0, padx=5, pady=5, sticky='W')
-        self.createScript.grid(row=5, column=2, padx=5, pady=5, sticky='W')
-        self.sourceTarget.grid(row=5, column=0, columnspan=3, rowspan=6, padx=5, pady=0, sticky='NSEW')
+        self.selectScript.grid(row=4, column=0, padx=5, pady=(5, 10), sticky='NSEW')
+        self.scriptLabel.grid(row=4, column=1, columnspan=2, padx=5, pady=(5, 10), sticky='NSEW')
+        self.sourceTarget.grid(row=5, column=0, columnspan=3, rowspan=5, padx=5, pady=5, sticky='NSEW')
+
+        self.clearFiles.grid(row=10, column=0, padx=5, pady=5, sticky='NSEW')
+        self.clearFolders.grid(row=10, column=1, padx=5, pady=5, sticky='NSEW')
+        self.createScript.grid(row=10, column=2, padx=5, pady=5, sticky='NSEW')
 
         self.sep_b.grid(row=11, column=0, columnspan=3, padx=5, pady=5, sticky='NSEW')
 
@@ -125,7 +129,8 @@ class Application(Frame):
         self.sep_e.grid(row=15, column=0, columnspan=3, padx=5, pady=5, sticky='NSEW')
         self.progress_bar.grid(row=16, column=0, columnspan=3, padx=5, pady=0, sticky='NSEW')
 
-        self.initialize.set(0)
+        self.initFiles.set(0)
+        self.initFolders.set(0)
         self.build.set(0)
 
     def setSource(self):
@@ -254,7 +259,7 @@ class Application(Frame):
 
         self.statusLabel["text"] = "Processing..."
 
-        if self.initialize.get() == 1:
+        if self.initFiles.get() == 1:
 
             # Target folder will be initialized to ensure that it has same structure as source
             for folderName, subFolders, fileNames in os.walk(self.target):
@@ -262,6 +267,8 @@ class Application(Frame):
                 # Delete all files first
                 for file in fileNames:
                     os.remove(os.path.join(folderName, file))
+
+        if self.initFolders.get() == 1:
 
             for folderName, subFolders, fileNames in os.walk(self.target, topdown=False):
 
@@ -351,7 +358,7 @@ root.title("FOLDER COPY UTILITY")
 
 # Set size
 
-wh = 380
+wh = 400
 ww = 480
 
 #root.resizable(height=False, width=False)
