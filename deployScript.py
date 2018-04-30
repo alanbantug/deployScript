@@ -196,7 +196,7 @@ class Application(Frame):
             self.allSet = False
             return
 
-        if self.initialize.get() == 1 and self.submit["text"] == "START":
+        if self.initFiles.get() == 1 and self.submit["text"] == "START":
             self.showMessage("You have chosen to initialize target folder.")
 
 
@@ -252,7 +252,9 @@ class Application(Frame):
 
         self.selectSource["state"] = DISABLED
         self.selectTarget["state"] = DISABLED
-        self.initTarget["state"] = DISABLED
+        self.clearFiles["state"] = DISABLED
+        self.clearFolders["state"] = DISABLED
+        self.createScript["state"] = DISABLED
         self.restart["state"] = DISABLED
         self.submit["state"] = DISABLED
         self.exit["state"] = DISABLED
@@ -306,7 +308,9 @@ class Application(Frame):
 
         self.selectSource["state"] = NORMAL
         self.selectTarget["state"] = NORMAL
-        self.initTarget["state"] = NORMAL
+        self.clearFiles["state"] = DISABLED
+        self.clearFolders["state"] = DISABLED
+        self.createScript["state"] = DISABLED
         self.restart["state"] = NORMAL
         self.submit["state"] = NORMAL
         self.exit["state"] = NORMAL
@@ -346,7 +350,9 @@ class Application(Frame):
         self.sourceLabel["text"] = "None"
         self.targetLabel["text"] = "None"
         self.submit["text"] = "START"
-        self.initialize.set(0)
+        self.initFiles.set(0)
+        self.initFolders.set(0)
+        self.build.set(0)
         self.source = ""
         self.target = ""
         self.copying = 0
